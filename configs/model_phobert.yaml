@@ -1,0 +1,58 @@
+# ============================================================
+# PhoBERT Fine-tuned Model Configuration
+# ============================================================
+
+model:
+  name: "phobert"
+  architecture: "PhoBERT_FineTuned"
+  description: "PhoBERT fine-tuned for Vietnamese sentiment classification"
+  
+  # Pre-trained model
+  pretrained: "vinai/phobert-base"  # "vinai/phobert-base" | "vinai/phobert-large"
+  num_labels: 2
+  
+  # Fine-tuning strategy
+  freeze_encoder_layers: 0          # 0 = full fine-tune, N = freeze first N layers
+  dropout: 0.1
+  classifier_dropout: 0.1
+  
+  # Pooling
+  pooling_strategy: "cls"           # "cls" | "mean" | "max"
+  
+  # Output attention weights for visualization
+  output_attentions: true
+
+training:
+  epochs: 5
+  batch_size: 16                    # Smaller batch for BERT (GPU memory)
+  learning_rate: 2.0e-5
+  optimizer: "adamw"
+  weight_decay: 0.01
+  
+  # Warmup schedule
+  scheduler: "linear_warmup"        # "linear_warmup" | "cosine_warmup"
+  warmup_ratio: 0.1                 # 10% of total steps for warmup
+  
+  # Early stopping
+  early_stopping: true
+  patience: 3
+  monitor: "val_f1"
+  mode: "max"
+  
+  # Gradient
+  max_grad_norm: 1.0
+  gradient_accumulation_steps: 2    # Effective batch = 16 * 2 = 32
+  
+  # Mixed precision
+  fp16: true                        # Enable AMP for faster training
+  
+  # Checkpointing
+  save_top_k: 2
+  save_last: true
+  
+  # Logging
+  log_every_n_steps: 20
+  val_check_interval: 1.0
+  
+  # Max sequence length (PhoBERT max = 256)
+  max_seq_length: 256

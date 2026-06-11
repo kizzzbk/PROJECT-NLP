@@ -1,0 +1,163 @@
+/* ============================================================
+   BrandHealth AI — Custom Streamlit Theme
+   ============================================================ */
+
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Global */
+html, body, [class*="css"] {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* Header styling */
+.stApp header {
+    background: transparent;
+}
+
+/* Main content area */
+.main .block-container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    max-width: 1200px;
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    border-right: 1px solid rgba(148, 163, 184, 0.1);
+}
+
+section[data-testid="stSidebar"] .stRadio > label {
+    font-size: 0.9rem;
+}
+
+/* Cards / Metric containers */
+[data-testid="stMetric"] {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.08) 0%, rgba(118, 75, 162, 0.08) 100%);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-radius: 12px;
+    padding: 1rem;
+}
+
+[data-testid="stMetricValue"] {
+    font-size: 1.8rem;
+    font-weight: 700;
+}
+
+[data-testid="stMetricDelta"] {
+    font-size: 0.85rem;
+}
+
+/* Buttons */
+.stButton > button {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.stButton > button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.stButton > button[kind="primary"] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+}
+
+.stButton > button[kind="primary"]:hover {
+    background: linear-gradient(135deg, #7c8ff5 0%, #8a5dba 100%);
+}
+
+/* Text input */
+.stTextArea textarea {
+    border-radius: 8px;
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    font-size: 0.95rem;
+}
+
+.stTextArea textarea:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+}
+
+/* File uploader */
+[data-testid="stFileUploader"] {
+    border-radius: 12px;
+}
+
+/* Select box */
+.stSelectbox > div > div {
+    border-radius: 8px;
+}
+
+/* Divider */
+hr {
+    border-color: rgba(148, 163, 184, 0.1);
+    margin: 1.5rem 0;
+}
+
+/* Expander */
+.streamlit-expanderHeader {
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+/* Dataframe */
+[data-testid="stDataFrame"] {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Info/Warning/Error boxes */
+.stAlert {
+    border-radius: 8px;
+}
+
+/* Progress bar */
+.stProgress > div > div {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 4px;
+}
+
+/* Tabs */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+}
+
+.stTabs [data-baseweb="tab"] {
+    border-radius: 8px 8px 0 0;
+    padding: 0.5rem 1.5rem;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(148, 163, 184, 0.3);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(148, 163, 184, 0.5);
+}
+
+/* Animation for results */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.element-container {
+    animation: fadeIn 0.3s ease-out;
+}

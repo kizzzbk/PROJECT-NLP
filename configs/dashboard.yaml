@@ -1,0 +1,49 @@
+# ============================================================
+# Dashboard Configuration
+# ============================================================
+
+dashboard:
+  title: "🏥 BrandHealth AI — Giám sát Sức khỏe Thương hiệu"
+  page_icon: "🏥"
+  layout: "wide"
+  
+  # Theme
+  theme:
+    primary_color: "#667eea"
+    background_color: "#0e1117"
+    secondary_background: "#1a1f2e"
+    text_color: "#fafafa"
+    font: "Inter"
+  
+  # Model display names
+  model_options:
+    bilstm: "BiLSTM (Baseline)"
+    bilstm_attention: "BiLSTM + Attention"
+    phobert: "PhoBERT Fine-tuned"
+  
+  # Default model
+  default_model: "phobert"
+  
+  # Chart settings
+  chart:
+    positive_color: "#10b981"       # Green
+    negative_color: "#ef4444"       # Red
+    neutral_color: "#6b7280"        # Gray
+    height: 450
+    interactive: true
+  
+  # Attention heatmap settings
+  heatmap:
+    colorscale: "RdYlGn"           # Red-Yellow-Green
+    height: 120
+    font_size: 14
+  
+  # Batch processing
+  batch:
+    max_file_size_mb: 50
+    supported_formats: [".csv"]
+    text_column_candidates: ["text", "comment", "review", "content", "bình luận"]
+  
+  # Performance
+  cache_models: true
+  show_preprocessing_steps: true

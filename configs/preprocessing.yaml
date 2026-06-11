@@ -1,0 +1,37 @@
+# ============================================================
+# Preprocessing Configuration
+# ============================================================
+
+preprocessing:
+  # Pipeline steps — each can be toggled on/off
+  steps:
+    lowercase: true
+    normalize_unicode: true
+    remove_urls: true
+    remove_emails: true
+    remove_phone_numbers: true
+    remove_html_tags: true
+    remove_special_chars: true
+    remove_extra_whitespace: true
+    remove_emojis: false           # Keep emojis by default (they carry sentiment)
+    remove_numbers: false
+    remove_stopwords: false        # Careful: may remove sentiment-bearing words
+    
+    # Vietnamese-specific
+    replace_teencode: true
+    word_segmentation: true
+  
+  # Teencode dictionary path
+  teencode_dict_path: "data/teencode_dict.json"
+  
+  # Word segmentation backend
+  segmenter:
+    backend: "underthesea"         # "underthesea" | "vncorenlp"
+    vncorenlp_dir: "vncorenlp"    # Only used if backend=vncorenlp
+  
+  # Stopwords
+  stopwords_path: null             # Path to custom stopwords file (optional)
+  
+  # Min/Max text length (characters) after preprocessing
+  min_text_length: 2
+  max_text_length: 1000

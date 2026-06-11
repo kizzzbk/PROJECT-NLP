@@ -1,0 +1,63 @@
+# ============================================================
+# BrandHealth AI Pipeline — Git Ignore Rules
+# ============================================================
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+
+# --- Virtual Environment ---
+venv/
+.venv/
+env/
+.env
+
+# --- Data (large files) ---
+data/raw/
+data/processed/
+data/vocab/
+*.csv
+*.tsv
+!data/teencode_dict.json
+
+# --- Model Checkpoints (large files) ---
+models/
+*.pt
+*.pth
+*.bin
+*.onnx
+*.h5
+
+# --- Experiment Logs (keep structure, ignore large logs) ---
+experiments/*/model/
+experiments/*/plots/
+experiments/*/*.csv
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Misc ---
+*.log
+*.tmp
+*.bak
+wandb/
+mlruns/
