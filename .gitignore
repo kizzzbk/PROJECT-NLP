@@ -27,7 +27,7 @@ data/vocab/
 !data/teencode_dict.json
 
 # --- Model Checkpoints (large files) ---
-models/
+/models/
 *.pt
 *.pth
 *.bin
