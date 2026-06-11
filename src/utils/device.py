@@ -32,7 +32,7 @@ def get_device(preference: str = "auto") -> torch.device:
         if torch.cuda.is_available():
             device = torch.device("cuda")
             gpu_name = torch.cuda.get_device_name(0)
-            gpu_memory = torch.cuda.get_device_properties(0).total_mem / (1024**3)
+            gpu_memory = torch.cuda.get_device_properties(0).total_memory / (1024**3)
             logger.info(
                 f"Using GPU: [bold green]{gpu_name}[/bold green] "
                 f"({gpu_memory:.1f} GB)"
@@ -80,7 +80,7 @@ def get_system_info() -> dict:
             "gpu_name": torch.cuda.get_device_name(0),
             "gpu_count": torch.cuda.device_count(),
             "gpu_memory_gb": round(
-                torch.cuda.get_device_properties(0).total_mem / (1024**3), 2
+                torch.cuda.get_device_properties(0).total_memory / (1024**3), 2
             ),
         })
     else:
