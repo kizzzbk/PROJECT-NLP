@@ -1,0 +1,11 @@
+{
+  "python_version": "3.13.1",
+  "pytorch_version": "2.12.0+cpu",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "processor": "AMD64 Family 23 Model 24 Stepping 1, AuthenticAMD",
+  "cuda_available": false,
+  "run_id": "2026-06-11_23-04-04_bilstm_run",
+  "run_name": "bilstm_run",
+  "start_time": "2026-06-11_23-04-04",
+  "tags": {}
+}

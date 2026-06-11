@@ -1,0 +1,66 @@
+data:
+  batch_size: 32
+  max_seq_length: 256
+  num_workers: 4
+  pin_memory: true
+  test_size: 0.2
+  val_size: 0.1
+labels:
+  label_names:
+    0: Tiêu cực
+    1: Tích cực
+  negative: 0
+  positive: 1
+logging:
+  format: rich
+  level: INFO
+  log_dir: logs
+  log_to_file: true
+model:
+  architecture: BiLSTM
+  bidirectional: true
+  description: Bidirectional LSTM baseline for sentiment classification
+  dropout: 0.3
+  embedding_dim: 300
+  fc_hidden_dim: 128
+  freeze_embedding: false
+  hidden_dim: 256
+  lstm_dropout: 0.2
+  name: bilstm
+  num_classes: 2
+  num_layers: 2
+  pooling: max_mean
+  pretrained_embedding: null
+paths:
+  data_dir: data
+  experiment_dir: experiments
+  model_dir: models
+  processed_dir: data/processed
+  raw_dir: data/raw
+  teencode_dict: data/teencode_dict.json
+  vocab_dir: data/vocab
+project:
+  description: Brand Health Monitoring from Customer Feedback using Deep Learning
+  device: auto
+  name: brandhealth-ai
+  seed: 42
+  version: 1.0.0
+training:
+  batch_size: 64
+  early_stopping: true
+  epochs: 1
+  learning_rate: 0.001
+  log_every_n_steps: 50
+  max_grad_norm: 5.0
+  min_lr: 1.0e-06
+  mode: max
+  monitor: val_f1
+  optimizer: adam
+  patience: 5
+  save_last: true
+  save_top_k: 3
+  scheduler: reduce_on_plateau
+  scheduler_factor: 0.5
+  scheduler_patience: 3
+  val_check_interval: 1.0
+  weight_decay: 1.0e-05

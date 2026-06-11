@@ -1,0 +1,8 @@
+{
+  "model": "bilstm",
+  "epochs": 1,
+  "learning_rate": 0.001,
+  "batch_size": 64,
+  "seed": 42,
+  "device": "cpu"
+}

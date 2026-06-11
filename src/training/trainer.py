@@ -156,7 +156,6 @@ class Trainer:
                 patience=getattr(train_cfg, "scheduler_patience", 3),
                 factor=getattr(train_cfg, "scheduler_factor", 0.5),
                 min_lr=getattr(train_cfg, "min_lr", 1e-6),
-                verbose=True,
             )
         elif sched_name == "cosine":
             return torch.optim.lr_scheduler.CosineAnnealingLR(
