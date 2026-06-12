@@ -101,7 +101,8 @@ Giao diện WebApp được thiết kế tối giản, tập trung vào luồng 
 
 ### Epic 2: Mô-đun Lõi AI (Deep Learning Model)
 * **FR-2.1:** Các mô hình phải trả về một mảng số thực đại diện cho phân phối xác suất (Prediction Probability) của 2 lớp $[0, 1]$.
-* **FR-2.2:** Mô hình phải xuất được ma trận trọng số (Attention Weights hoặc hệ số Score của Layer cuối cùng) để chuyển giao sang mô-đun UI làm tham số vẽ độ đậm nhạt cho Heatmap của từng từ.
+* **FR-2.2:** Các mô hình khi huấn luyện phải được config rõ ràng, tôi muốn tự động chạy mỗi mô hình 5 lần và cho ra kết quả dạng avg +- std.
+* **FR-2.3:** Mô hình phải xuất được ma trận trọng số (Attention Weights hoặc hệ số Score của Layer cuối cùng) để chuyển giao sang mô-đun UI làm tham số vẽ độ đậm nhạt cho Heatmap của từng từ.
 
 ### Epic 3: Giao diện Web Dashboard (Interactive UI Layer)
 * **FR-3.1:** Hệ thống phải bảo mật bằng màn hình Login, kiểm tra tài khoản từ Mock DB phân biệt rõ hai nhóm quyền Admin và Staff.

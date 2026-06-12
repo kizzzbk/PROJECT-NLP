@@ -1,13 +1,12 @@
 """
-Tab 2: Executive Dashboard — Batch CSV Analysis
-=================================================
-PRD Section 6.2
-Interactive bar chart with click-to-drill-down functionality (FR-3.3).
+Executive Dashboard — Batch CSV Analysis
+==========================================
+PRD Section 6.2: Single-page dashboard with Pie Chart + Drill-down + Heatmap table.
+Implements FR-3.2 (interactive pie chart) and FR-3.3 (heatmap table).
 """
 
 import streamlit as st
 import pandas as pd
-import plotly.graph_objects as go
 
 from app.components.model_selector import render_model_selector
 from app.components.sentiment_chart import render_sentiment_chart
@@ -15,7 +14,7 @@ from app.components.comment_table import render_comment_table
 
 
 def render_batch_analysis():
-    """Render the batch analysis page."""
+    """Render the batch analysis page (main dashboard)."""
     
     st.markdown(
         """
@@ -23,7 +22,7 @@ def render_batch_analysis():
             📊 Giám sát Phản hồi Hàng loạt
         </h1>
         <p style="text-align: center; color: #94a3b8; margin-top: 0.3rem; margin-bottom: 2rem;">
-            Tải file CSV → Phân loại tự động → Click vào biểu đồ để xem chi tiết
+            Tải file CSV → Phân loại tự động → Click vào biểu đồ tròn để xem chi tiết
         </p>
         """,
         unsafe_allow_html=True,
@@ -108,7 +107,7 @@ def _detect_text_column(df: pd.DataFrame) -> str:
 
 
 def _process_batch(df: pd.DataFrame, text_column: str, predictor):
-    """Process all texts in the dataframe."""
+    """Process all texts in the dataframe. Store prob, attention, tokens."""
     texts = df[text_column].astype(str).tolist()
     total = len(texts)
     
@@ -117,12 +116,24 @@ def _process_batch(df: pd.DataFrame, text_column: str, predictor):
     
     for i, text in enumerate(texts):
         result = predictor.predict_single(text)
-        results.append({
+        
+        row = {
             "Bình luận gốc": text,
             "Bình luận đã xử lý": result["cleaned_text"],
             "Sắc thái": result["label"],
             "Độ tự tin": result["confidence"],
-        })
+            "prob_class_0": result["probabilities"].get("Tiêu cực", 0.0),
+        }
+        
+        # Store attention data for heatmap rendering
+        if result.get("attention_weights"):
+            row["attention_weights"] = result["attention_weights"]
+            row["tokens"] = result["tokens"]
+        else:
+            row["attention_weights"] = None
+            row["tokens"] = None
+        
+        results.append(row)
         
         if (i + 1) % max(1, total // 100) == 0:
             progress_bar.progress(
@@ -134,11 +145,12 @@ def _process_batch(df: pd.DataFrame, text_column: str, predictor):
     
     results_df = pd.DataFrame(results)
     st.session_state.batch_results = results_df
+    st.success(f"✅ Đã phân tích thành công **{total:,}** dòng bình luận!")
     st.rerun()
 
 
 def _display_results():
-    """Display batch analysis results with interactive chart."""
+    """Display batch analysis results with interactive pie chart + heatmap table."""
     results_df = st.session_state.batch_results
     
     # Summary metrics
@@ -161,11 +173,11 @@ def _display_results():
     
     st.divider()
     
-    # Interactive chart
+    # Interactive PIE chart + Table
     col_chart, col_table = st.columns([1, 1])
     
     with col_chart:
-        st.markdown("### 📊 Biểu đồ Tổng quan Sắc thái")
+        st.markdown("### 🥧 Biểu đồ Tròn Sắc thái")
         selected_sentiment = render_sentiment_chart(positive_count, negative_count)
     
     with col_table:
@@ -173,16 +185,17 @@ def _display_results():
         
         if selected_sentiment:
             st.info(f"🔍 Đang hiển thị: **{selected_sentiment}**")
-            filtered = results_df[results_df["Sắc thái"] == selected_sentiment]
+            filtered = results_df[results_df["Sắc thái"] == selected_sentiment].copy()
         else:
-            st.info("💡 **Click vào cột trên biểu đồ** để lọc bình luận theo sắc thái")
-            filtered = results_df
+            st.info("💡 **Click vào miếng bánh** trên biểu đồ tròn để lọc bình luận theo sắc thái")
+            filtered = results_df.copy()
         
-        render_comment_table(filtered)
+        render_comment_table(filtered, selected_sentiment=selected_sentiment)
     
     # Download button
     st.divider()
-    csv_data = results_df.to_csv(index=False, encoding="utf-8-sig")
+    export_df = results_df[["Bình luận gốc", "Sắc thái", "Độ tự tin", "prob_class_0"]].copy()
+    csv_data = export_df.to_csv(index=False, encoding="utf-8-sig")
     st.download_button(
         "⬇️ Tải kết quả (CSV)",
         data=csv_data,

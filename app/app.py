@@ -2,9 +2,8 @@
 BrandHealth AI — Web Dashboard
 ================================
 Main Streamlit entry point.
-Provides two tabs:
-  1. Real-time Playground (single text analysis)
-  2. Executive Dashboard (batch CSV analysis)
+PRD Section 6: Single-page Dashboard with batch CSV analysis.
+No login system (PRD Section 4.2 Out-of-Scope).
 
 Run: streamlit run app/app.py
 """
@@ -32,7 +31,6 @@ if css_path.exists():
     with open(css_path, "r", encoding="utf-8") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-from app.pages.single_analysis import render_single_analysis
 from app.pages.batch_analysis import render_batch_analysis
 
 
@@ -49,16 +47,6 @@ def main():
             </div>
             """,
             unsafe_allow_html=True,
-        )
-        
-        st.divider()
-        
-        # Navigation
-        page = st.radio(
-            "📌 Chọn tính năng",
-            options=["🔬 Phân tích Đơn lẻ", "📊 Giám sát Hàng loạt"],
-            index=0,
-            label_visibility="collapsed",
         )
         
         st.divider()
@@ -83,13 +71,10 @@ def main():
         )
         
         st.divider()
-        st.caption("© 2026 BrandHealth AI Pipeline v1.0")
+        st.caption("© 2026 BrandHealth AI Pipeline v2.0")
     
-    # Main content
-    if "🔬" in page:
-        render_single_analysis()
-    else:
-        render_batch_analysis()
+    # Main content — single-page batch analysis (PRD Section 4.2)
+    render_batch_analysis()
 
 
 if __name__ == "__main__":

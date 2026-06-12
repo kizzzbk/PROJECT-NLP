@@ -1,7 +1,8 @@
 """
 Sentiment Chart Component
 ===========================
-Interactive Plotly bar chart with click event for drill-down (FR-3.3).
+Interactive Plotly PIE chart with click event for drill-down (FR-3.2).
+PRD Section 6.2: Biểu đồ tròn tương tác hiển thị tỷ lệ % Tích cực / Tiêu cực.
 """
 
 from typing import Optional
@@ -15,9 +16,9 @@ def render_sentiment_chart(
     negative_count: int,
 ) -> Optional[str]:
     """
-    Render an interactive 2-bar chart (Positive vs Negative).
+    Render an interactive pie chart (Positive vs Negative).
     
-    When user clicks on a bar, returns the selected sentiment label
+    When user clicks on a slice, returns the selected sentiment label
     so the parent can filter the data table accordingly.
     
     Args:
@@ -31,55 +32,50 @@ def render_sentiment_chart(
     
     fig = go.Figure()
     
-    # Positive bar
+    # Pie chart with 2 slices
     fig.add_trace(
-        go.Bar(
-            x=["Tích cực"],
-            y=[positive_count],
-            name="Tích cực",
-            marker_color="#10b981",
-            marker_line_color="#059669",
-            marker_line_width=2,
-            text=[f"{positive_count:,}<br>({positive_count/total:.1%})"],
-            textposition="outside",
-            textfont=dict(size=14, color="#10b981"),
-            hovertemplate="<b>Tích cực</b><br>Số lượng: %{y:,}<br>Tỷ lệ: " + f"{positive_count/total:.1%}" + "<extra></extra>",
-            customdata=["Tích cực"],
-        )
-    )
-    
-    # Negative bar
-    fig.add_trace(
-        go.Bar(
-            x=["Tiêu cực"],
-            y=[negative_count],
-            name="Tiêu cực",
-            marker_color="#ef4444",
-            marker_line_color="#dc2626",
-            marker_line_width=2,
-            text=[f"{negative_count:,}<br>({negative_count/total:.1%})"],
-            textposition="outside",
-            textfont=dict(size=14, color="#ef4444"),
-            hovertemplate="<b>Tiêu cực</b><br>Số lượng: %{y:,}<br>Tỷ lệ: " + f"{negative_count/total:.1%}" + "<extra></extra>",
-            customdata=["Tiêu cực"],
+        go.Pie(
+            labels=["Tích cực", "Tiêu cực"],
+            values=[positive_count, negative_count],
+            marker=dict(
+                colors=["#10b981", "#ef4444"],
+                line=dict(color="#0e1117", width=3),
+            ),
+            textinfo="label+percent",
+            textfont=dict(size=15, color="white"),
+            hovertemplate=(
+                "<b>%{label}</b><br>"
+                "Số lượng: %{value:,}<br>"
+                "Tỷ lệ: %{percent}<extra></extra>"
+            ),
+            hole=0.35,  # donut style
+            pull=[0.02, 0.02],
+            customdata=["Tích cực", "Tiêu cực"],
         )
     )
     
     fig.update_layout(
         height=420,
-        showlegend=False,
+        showlegend=True,
+        legend=dict(
+            orientation="h",
+            yanchor="bottom",
+            y=-0.15,
+            xanchor="center",
+            x=0.5,
+            font=dict(size=13, color="#e2e8f0"),
+        ),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
-        margin=dict(l=40, r=20, t=20, b=40),
-        yaxis=dict(
-            title="Số lượng bình luận",
-            gridcolor="rgba(148, 163, 184, 0.1)",
-            zeroline=False,
-        ),
-        xaxis=dict(
-            tickfont=dict(size=14, color="#e2e8f0"),
-        ),
-        bargap=0.4,
+        margin=dict(l=20, r=20, t=30, b=50),
+        annotations=[
+            dict(
+                text=f"<b>{total:,}</b><br>bình luận",
+                x=0.5, y=0.5,
+                font=dict(size=16, color="#e2e8f0"),
+                showarrow=False,
+            )
+        ],
     )
     
     # Render with selection support
@@ -87,7 +83,7 @@ def render_sentiment_chart(
         fig,
         use_container_width=True,
         on_select="rerun",
-        key="sentiment_bar_chart",
+        key="sentiment_pie_chart",
     )
     
     # Process click event
@@ -99,15 +95,15 @@ def render_sentiment_chart(
         
         if points:
             point = points[0]
-            # Get the x-axis label of the clicked bar
-            x_label = point.get("x", None)
-            if x_label in ["Tích cực", "Tiêu cực"]:
-                selected_sentiment = x_label
+            # Get the label of the clicked slice
+            label = point.get("label", None)
+            if label in ["Tích cực", "Tiêu cực"]:
+                selected_sentiment = label
     
     # Also provide button-based fallback
     st.markdown(
         "<p style='text-align: center; color: #64748b; font-size: 0.8rem;'>"
-        "👆 Click trực tiếp vào cột hoặc dùng nút bên dưới</p>",
+        "👆 Click vào miếng bánh hoặc dùng nút bên dưới</p>",
         unsafe_allow_html=True,
     )
     
