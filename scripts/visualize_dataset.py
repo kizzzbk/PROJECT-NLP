@@ -104,6 +104,40 @@ def main():
     print(f"   Saved distribution chart -> {dist_chart_path}")
     
     # ----------------------------------------------------
+    # 2b. Biểu đồ so sánh phân bố độ dài câu tích cực và tiêu cực
+    # ----------------------------------------------------
+    print("2b. Generating sentence length comparison chart (Positive vs. Negative)...")
+    # Map label to text for visualization
+    df['Sắc thái'] = df['label'].map({1: 'Tích cực', 0: 'Tiêu cực'})
+    
+    plt.figure(figsize=(10, 6))
+    sns.histplot(
+        data=df, 
+        x="word_count", 
+        hue="Sắc thái", 
+        kde=True, 
+        bins=60, 
+        palette={"Tích cực": "#48bb78", "Tiêu cực": "#f56565"},
+        alpha=0.4,
+        element="step",
+        stat="density",
+        common_norm=False,
+        line_kws={"linewidth": 2}
+    )
+    plt.title("So sánh phân bố độ dài bình luận Tích cực vs. Tiêu cực", fontsize=14, weight='bold', pad=15)
+    plt.xlabel("Số lượng từ trong một câu bình luận", fontsize=12)
+    plt.ylabel("Mật độ phân bố (Density)", fontsize=12)
+    plt.grid(axis='y', linestyle='--', alpha=0.3)
+    
+    # Adjust axis limit to exclude outliers
+    plt.xlim(0, df['word_count'].quantile(0.99))
+    plt.tight_layout()
+    comparison_chart_path = OUTPUT_DIR / "sentence_length_comparison.png"
+    plt.savefig(comparison_chart_path, dpi=200)
+    plt.close()
+    print(f"   Saved comparison chart -> {comparison_chart_path}")
+    
+    # ----------------------------------------------------
     # 3. Hệ thống đám mây từ ngữ (Word Cloud) cho tích cực và tiêu cực
     # ----------------------------------------------------
     print("3. Generating positive and negative Word Clouds...")
