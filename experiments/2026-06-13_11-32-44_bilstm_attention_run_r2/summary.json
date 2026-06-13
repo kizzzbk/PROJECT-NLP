@@ -1,0 +1,12 @@
+{
+  "run_id": "2026-06-13_11-32-44_bilstm_attention_run_r2",
+  "status": "completed",
+  "duration_seconds": 458.98,
+  "duration_readable": "7.6 minutes",
+  "end_time": "2026-06-13T11:40:23.579520",
+  "final_metrics": {
+    "best_val_f1": 0.9016346478430242,
+    "total_epochs": 9,
+    "total_time_seconds": 458.947717666626
+  }
+}

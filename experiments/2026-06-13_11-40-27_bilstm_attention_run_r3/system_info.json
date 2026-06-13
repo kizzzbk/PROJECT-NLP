@@ -1,0 +1,15 @@
+{
+  "python_version": "3.12.13",
+  "pytorch_version": "2.10.0+cu128",
+  "platform": "Linux-6.6.122+-x86_64-with-glibc2.35",
+  "processor": "x86_64",
+  "cuda_version": "12.8",
+  "cudnn_version": "91002",
+  "gpu_name": "Tesla T4",
+  "gpu_count": 1,
+  "gpu_memory_gb": 14.56,
+  "run_id": "2026-06-13_11-40-27_bilstm_attention_run_r3",
+  "run_name": "bilstm_attention_run_r3",
+  "start_time": "2026-06-13_11-40-27",
+  "tags": {}
+}
