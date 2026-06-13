@@ -1,0 +1,10 @@
+{
+  "model": "bilstm",
+  "epochs": 30,
+  "learning_rate": 0.001,
+  "batch_size": 64,
+  "seed": 42,
+  "device": "cuda",
+  "run_index": 1,
+  "total_runs": 5
+}
