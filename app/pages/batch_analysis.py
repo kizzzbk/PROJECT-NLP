@@ -49,7 +49,7 @@ def render_batch_analysis():
         st.info(f"📋 File: **{uploaded_file.name}** | Số dòng: **{len(df):,}** | Cột văn bản: **{text_column}**")
         
         # Process button
-        if st.button("🚀 Phân tích Hàng loạt", type="primary", use_container_width=True):
+        if st.button("Phân tích Hàng loạt", type="primary", use_container_width=True):
             _process_batch(df, text_column, predictor)
         
         # Show results if already processed
@@ -159,7 +159,7 @@ def _display_results():
         st.metric("📊 Độ tự tin trung bình", f"{avg_confidence:.1%}")
     
     with col_chart:
-        st.markdown("### 🥧 Biểu đồ Tỷ lệ Sắc thái")
+        st.markdown("### Biểu đồ Tỷ lệ Sắc thái")
         render_sentiment_chart(positive_count, negative_count)
     
     st.divider()
@@ -178,8 +178,9 @@ def _display_results():
     
     # Download button
     st.divider()
-    export_df = results_df[["Bình luận gốc", "Sắc thái", "Độ tự tin", "prob_class_0"]].copy()
+    export_df = results_df[["Bình luận gốc", "Sắc thái"]].copy()
     csv_data = export_df.to_csv(index=False, encoding="utf-8-sig")
+
     st.download_button(
         "⬇️ Tải kết quả phân tích (CSV)",
         data=csv_data,

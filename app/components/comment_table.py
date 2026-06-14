@@ -127,23 +127,23 @@ def render_comment_table(
     
     # Table header
     html = """
-    <div style="max-height: 500px; overflow-y: auto; border-radius: 8px; 
-                border: 1px solid rgba(148, 163, 184, 0.2);">
-    <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem;">
-    <thead>
-        <tr style="background: rgba(30, 41, 59, 0.8); position: sticky; top: 0; z-index: 1;">
-            <th style="padding: 10px 12px; text-align: left; color: #e2e8f0; 
-                       border-bottom: 2px solid #334155; width: 5%;">#</th>
-            <th style="padding: 10px 12px; text-align: left; color: #e2e8f0; 
-                       border-bottom: 2px solid #334155; width: 60%;">📝 Bình luận (Heatmap)</th>
-            <th style="padding: 10px 12px; text-align: center; color: #e2e8f0; 
-                       border-bottom: 2px solid #334155; width: 15%;">🏷️ Sắc thái</th>
-            <th style="padding: 10px 12px; text-align: center; color: #e2e8f0; 
-                       border-bottom: 2px solid #334155; width: 20%;">📊 Xác suất</th>
-        </tr>
-    </thead>
-    <tbody>
-    """
+<div style="max-height: 500px; overflow-y: auto; border-radius: 8px; 
+            border: 1px solid #ddd6fe;">
+<table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; background-color: #ffffff;">
+<thead>
+    <tr style="background: #4c1d95; position: sticky; top: 0; z-index: 1;">
+        <th style="padding: 10px 12px; text-align: left; color: #ffffff; 
+                   border-bottom: 2px solid #ddd6fe; width: 5%;">#</th>
+        <th style="padding: 10px 12px; text-align: left; color: #ffffff; 
+                   border-bottom: 2px solid #ddd6fe; width: 60%;">📝 Bình luận (Heatmap)</th>
+        <th style="padding: 10px 12px; text-align: center; color: #ffffff; 
+                   border-bottom: 2px solid #ddd6fe; width: 15%;">🏷️ Sắc thái</th>
+        <th style="padding: 10px 12px; text-align: center; color: #ffffff; 
+                   border-bottom: 2px solid #ddd6fe; width: 20%;">📊 Xác suất</th>
+    </tr>
+</thead>
+<tbody>
+"""
     
     for idx, (_, row) in enumerate(display_df.iterrows(), 1):
         # Build heatmap text
@@ -182,29 +182,32 @@ def render_comment_table(
         else:
             prob_display = f"{prob_neg:.1%}"
         
-        # Row background (alternating)
-        row_bg = "rgba(30, 41, 59, 0.3)" if idx % 2 == 0 else "transparent"
+        # Row background (alternating soft purple)
+        row_bg = "#f5f3ff" if idx % 2 == 0 else "#ffffff"
         
         html += f"""
-        <tr style="background: {row_bg}; border-bottom: 1px solid rgba(148, 163, 184, 0.1);">
-            <td style="padding: 8px 12px; color: #64748b; font-size: 0.8rem;">{idx}</td>
-            <td style="padding: 8px 12px; color: #e2e8f0; line-height: 1.6;">{heatmap_text}</td>
-            <td style="padding: 8px 12px; text-align: center;">
-                <span style="background: {badge_bg}; color: {badge_color}; 
-                             padding: 3px 10px; border-radius: 12px; font-size: 0.8rem;
-                             font-weight: 600;">
-                    {emoji} {sentiment}
-                </span>
-            </td>
-            <td style="padding: 8px 12px; text-align: center; color: #e2e8f0; 
-                       font-weight: 600;">{prob_display}</td>
-        </tr>
-        """
+<tr style="background: {row_bg}; border-bottom: 1px solid #ddd6fe;">
+    <td style="padding: 8px 12px; color: #7c3aed; font-size: 0.8rem; font-weight: 500;">{idx}</td>
+    <td style="padding: 8px 12px; color: #311066; line-height: 1.6; font-weight: 500;">{heatmap_text}</td>
+    <td style="padding: 8px 12px; text-align: center;">
+        <span style="background: {badge_bg}; color: {badge_color}; 
+                     padding: 3px 10px; border-radius: 12px; font-size: 0.8rem;
+                     font-weight: 600;">
+            {emoji} {sentiment}
+        </span>
+    </td>
+    <td style="padding: 8px 12px; text-align: center; color: #4c1d95; 
+               font-weight: 600;">{prob_display}</td>
+</tr>
+"""
     
     html += """
-    </tbody>
-    </table>
-    </div>
-    """
+</tbody>
+</table>
+</div>
+"""
     
-    st.markdown(html, unsafe_allow_html=True)
+    # Strip all leading spaces from each line in the HTML block to prevent markdown code block formatting
+    cleaned_html = "\n".join([line.strip() for line in html.split("\n")])
+    st.markdown(cleaned_html, unsafe_allow_html=True)
+
