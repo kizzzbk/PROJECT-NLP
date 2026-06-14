@@ -54,8 +54,9 @@ class SentimentPredictor:
             config_path: Path to model config YAML (optional, loaded from checkpoint).
             device: Device to use ('auto', 'cuda', 'cpu').
         """
-        self.model_name = model_name
+        self.model_name = model_name.replace("bilstm__attention", "bilstm_attention")
         self.checkpoint_path = checkpoint_path
+
         
         # Set device
         if device == "auto":

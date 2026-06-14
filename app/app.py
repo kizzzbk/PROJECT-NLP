@@ -2,17 +2,27 @@
 BrandHealth AI — Web Dashboard
 ================================
 Main Streamlit entry point.
-PRD Section 6: Single-page Dashboard with batch CSV analysis.
-No login system (PRD Section 4.2 Out-of-Scope).
-
-Run: streamlit run app/app.py
 """
 
 import sys
 from pathlib import Path
 
-# Add project root to path
+# Add project root to path and remove script directory to avoid naming collision with 'app' package
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
+SCRIPT_DIR = Path(__file__).resolve().parent
+
+cleaned_path = []
+for p in sys.path:
+    if not p:
+        continue
+    try:
+        if Path(p).resolve() == SCRIPT_DIR:
+            continue
+    except Exception:
+        pass
+    cleaned_path.append(p)
+
+sys.path = cleaned_path
 sys.path.insert(0, str(PROJECT_ROOT))
 
 import streamlit as st
@@ -21,8 +31,8 @@ import streamlit as st
 st.set_page_config(
     page_title="BrandHealth AI — Giám sát Sức khỏe Thương hiệu",
     page_icon="🏥",
-    layout="wide",
-    initial_sidebar_state="expanded",
+    layout="centered",  # Centered layout looks much cleaner, minimal and elegant
+    initial_sidebar_state="collapsed",
 )
 
 # Load custom CSS
@@ -31,49 +41,39 @@ if css_path.exists():
     with open(css_path, "r", encoding="utf-8") as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
+# CSS to completely hide the sidebar toggle button for a clean single-page look
+st.markdown(
+    """
+    <style>
+        [data-testid="collapsedControl"] {
+            display: none !important;
+        }
+        section[data-testid="stSidebar"] {
+            display: none !important;
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
 from app.pages.batch_analysis import render_batch_analysis
 
 
 def main():
-    # Sidebar
-    with st.sidebar:
-        st.markdown(
-            """
-            <div style="text-align: center; padding: 1rem 0;">
-                <h1 style="font-size: 1.8rem; margin-bottom: 0.2rem;">🏥 BrandHealth AI</h1>
-                <p style="color: #94a3b8; font-size: 0.85rem; margin-top: 0;">
-                    Giám sát Sức khỏe Thương hiệu
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        
-        st.divider()
-        
-        # System info
-        st.markdown(
-            """
-            <div style="padding: 0.5rem; background: rgba(102, 126, 234, 0.1); 
-                        border-radius: 8px; font-size: 0.8rem;">
-                <p style="margin: 0.2rem 0;">📐 <b>Mô hình hỗ trợ:</b></p>
-                <ul style="margin: 0.2rem 0; padding-left: 1.2rem;">
-                    <li>BiLSTM (Baseline)</li>
-                    <li>BiLSTM + Attention</li>
-                    <li>PhoBERT Fine-tuned</li>
-                </ul>
-                <p style="margin: 0.5rem 0 0.2rem;">
-                    💡 <b>Dữ liệu:</b> NTC-SCV
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-        
-        st.divider()
-        st.caption("© 2026 BrandHealth AI Pipeline v2.0")
+    # Header Section
+    st.markdown(
+        """
+        <div style="text-align: center; margin-top: 1rem; margin-bottom: 2rem;">
+            <h1 style="font-size: 2.5rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">🏥 BrandHealth AI</h1>
+            <p style="font-size: 1.1rem; color: #94a3b8; font-weight: 400;">
+                Hệ thống Giám sát Sức khỏe Thương hiệu từ Phản hồi Khách hàng
+            </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
     
-    # Main content — single-page batch analysis (PRD Section 4.2)
+    # Render the main analysis content
     render_batch_analysis()
 
 

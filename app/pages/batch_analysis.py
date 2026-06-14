@@ -15,23 +15,11 @@ from app.components.comment_table import render_comment_table
 
 def render_batch_analysis():
     """Render the batch analysis page (main dashboard)."""
-    
-    st.markdown(
-        """
-        <h1 style="text-align: center; margin-bottom: 0;">
-            📊 Giám sát Phản hồi Hàng loạt
-        </h1>
-        <p style="text-align: center; color: #94a3b8; margin-top: 0.3rem; margin-bottom: 2rem;">
-            Tải file CSV → Phân loại tự động → Click vào biểu đồ tròn để xem chi tiết
-        </p>
-        """,
-        unsafe_allow_html=True,
-    )
-    
     # Model selector
     model_name, predictor = render_model_selector(key_prefix="batch")
     
-    st.divider()
+    st.markdown("<br>", unsafe_allow_html=True)
+
     
     # File uploader
     uploaded_file = st.file_uploader(
@@ -150,7 +138,7 @@ def _process_batch(df: pd.DataFrame, text_column: str, predictor):
 
 
 def _display_results():
-    """Display batch analysis results with interactive pie chart + heatmap table."""
+    """Display batch analysis results with pie chart and tabbed positive/negative tables."""
     results_df = st.session_state.batch_results
     
     # Summary metrics
@@ -159,47 +147,44 @@ def _display_results():
     negative_count = (results_df["Sắc thái"] == "Tiêu cực").sum()
     avg_confidence = results_df["Độ tự tin"].mean()
     
-    # Metric cards
-    col1, col2, col3, col4 = st.columns(4)
+    # Top section: Metrics on the left, Pie chart on the right
+    col_metrics, col_chart = st.columns([1, 1])
     
-    with col1:
+    with col_metrics:
+        st.markdown("### 📈 Chỉ số Tổng quan")
+        st.markdown("<br>", unsafe_allow_html=True)
         st.metric("📝 Tổng bình luận", f"{total:,}")
-    with col2:
-        st.metric("😊 Tích cực", f"{positive_count:,}", f"{positive_count/total:.1%}")
-    with col3:
-        st.metric("😠 Tiêu cực", f"{negative_count:,}", f"{negative_count/total:.1%}")
-    with col4:
-        st.metric("📊 Độ tự tin TB", f"{avg_confidence:.1%}")
+        st.metric("😊 Bình luận Tích cực", f"{positive_count:,}", f"{positive_count/total:.1%}")
+        st.metric("😠 Bình luận Tiêu cực", f"{negative_count:,}", f"-{negative_count/total:.1%}", delta_color="inverse")
+        st.metric("📊 Độ tự tin trung bình", f"{avg_confidence:.1%}")
+    
+    with col_chart:
+        st.markdown("### 🥧 Biểu đồ Tỷ lệ Sắc thái")
+        render_sentiment_chart(positive_count, negative_count)
     
     st.divider()
     
-    # Interactive PIE chart + Table
-    col_chart, col_table = st.columns([1, 1])
+    # Bottom section: Tabs for Positive and Negative comments
+    st.markdown("### 🔍 Chi tiết Bình luận của 2 nhóm")
+    tab1, tab2 = st.tabs(["😊 Bình luận Tích cực (Độ tự tin cao lên đầu)", "😠 Bình luận Tiêu cực (Độ tự tin cao lên đầu)"])
     
-    with col_chart:
-        st.markdown("### 🥧 Biểu đồ Tròn Sắc thái")
-        selected_sentiment = render_sentiment_chart(positive_count, negative_count)
+    with tab1:
+        positive_df = results_df[results_df["Sắc thái"] == "Tích cực"].copy()
+        render_comment_table(positive_df, selected_sentiment="Tích cực")
     
-    with col_table:
-        st.markdown("### 📋 Danh sách Bình luận Chi tiết")
-        
-        if selected_sentiment:
-            st.info(f"🔍 Đang hiển thị: **{selected_sentiment}**")
-            filtered = results_df[results_df["Sắc thái"] == selected_sentiment].copy()
-        else:
-            st.info("💡 **Click vào miếng bánh** trên biểu đồ tròn để lọc bình luận theo sắc thái")
-            filtered = results_df.copy()
-        
-        render_comment_table(filtered, selected_sentiment=selected_sentiment)
+    with tab2:
+        negative_df = results_df[results_df["Sắc thái"] == "Tiêu cực"].copy()
+        render_comment_table(negative_df, selected_sentiment="Tiêu cực")
     
     # Download button
     st.divider()
     export_df = results_df[["Bình luận gốc", "Sắc thái", "Độ tự tin", "prob_class_0"]].copy()
     csv_data = export_df.to_csv(index=False, encoding="utf-8-sig")
     st.download_button(
-        "⬇️ Tải kết quả (CSV)",
+        "⬇️ Tải kết quả phân tích (CSV)",
         data=csv_data,
         file_name="brandhealth_results.csv",
         mime="text/csv",
         use_container_width=True,
     )
+

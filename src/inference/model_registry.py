@@ -69,16 +69,21 @@ class ModelRegistry:
         Returns:
             Path to best_model.pt, or None if not found.
         """
-        best_path = self.model_dir / model_type / "best_model.pt"
-        if best_path.exists():
-            return str(best_path)
-        
-        # Fallback: look for any checkpoint
-        model_dir = self.model_dir / model_type
-        if model_dir.exists():
-            checkpoints = list(model_dir.glob("*.pt"))
-            if checkpoints:
-                return str(checkpoints[-1])  # Latest
+        search_types = [model_type]
+        if model_type == "bilstm_attention":
+            search_types.append("bilstm__attention")
+            
+        for m_type in search_types:
+            best_path = self.model_dir / m_type / "best_model.pt"
+            if best_path.exists():
+                return str(best_path)
+            
+            # Fallback: look for any checkpoint
+            model_dir = self.model_dir / m_type
+            if model_dir.exists():
+                checkpoints = list(model_dir.glob("*.pt"))
+                if checkpoints:
+                    return str(checkpoints[-1])  # Latest
         
         return None
 
@@ -101,7 +106,8 @@ class ModelRegistry:
     def get_available_model_types(self) -> List[str]:
         """Get list of model types with available checkpoints."""
         available = []
-        for name in ["bilstm", "bilstm_attention", "phobert"]:
+        for name in ["bilstm", "bilstm_attention"]:
             if self.is_available(name):
                 available.append(name)
         return available
+

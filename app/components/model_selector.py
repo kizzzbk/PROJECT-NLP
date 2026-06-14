@@ -36,8 +36,8 @@ def render_model_selector(key_prefix: str = "single") -> Tuple[str, Optional[obj
     MODEL_DISPLAY = {
         "bilstm": "BiLSTM (Baseline)",
         "bilstm_attention": "BiLSTM + Attention",
-        "phobert": "PhoBERT Fine-tuned",
     }
+
     
     # Check which models are available
     registry = ModelRegistry("models")
