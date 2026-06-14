@@ -166,7 +166,7 @@ def _display_results():
     
     # Bottom section: Tabs for Positive and Negative comments
     st.markdown("### 🔍 Chi tiết Bình luận của 2 nhóm")
-    tab1, tab2 = st.tabs(["😊 Bình luận Tích cực (Độ tự tin cao lên đầu)", "😠 Bình luận Tiêu cực (Độ tự tin cao lên đầu)"])
+    tab1, tab2 = st.tabs(["😊 Bình luận Tích cực", "😠 Bình luận Tiêu cực"])
     
     with tab1:
         positive_df = results_df[results_df["Sắc thái"] == "Tích cực"].copy()

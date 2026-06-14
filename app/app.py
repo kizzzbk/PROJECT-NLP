@@ -30,7 +30,7 @@ import streamlit as st
 # Page config — must be first Streamlit command
 st.set_page_config(
     page_title="BrandHealth AI — Giám sát Sức khỏe Thương hiệu",
-    page_icon="🏥",
+    page_icon="",
     layout="centered",  # Centered layout looks much cleaner, minimal and elegant
     initial_sidebar_state="collapsed",
 )
@@ -64,9 +64,9 @@ def main():
     st.markdown(
         """
         <div style="text-align: center; margin-top: 1rem; margin-bottom: 2rem;">
-            <h1 style="font-size: 2.5rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">🏥 BrandHealth AI</h1>
-            <p style="font-size: 1.1rem; color: #94a3b8; font-weight: 400;">
-                Hệ thống Giám sát Sức khỏe Thương hiệu từ Phản hồi Khách hàng
+            <h1 style="font-size: 2.5rem; font-weight: 800; color: #ffffff; margin-bottom: 0.5rem;">BrandHealth AI</h1>
+            <p style="font-size: 1.1rem; color: #ffffff; font-weight: 400;">
+                Ứng dụng Giám sát Sức khỏe Thương hiệu từ Phản hồi Khách hàng
             </p>
         </div>
         """,

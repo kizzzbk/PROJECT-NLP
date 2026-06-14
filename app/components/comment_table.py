@@ -135,7 +135,7 @@ def render_comment_table(
         <th style="padding: 10px 12px; text-align: left; color: #ffffff; 
                    border-bottom: 2px solid #ddd6fe; width: 5%;">#</th>
         <th style="padding: 10px 12px; text-align: left; color: #ffffff; 
-                   border-bottom: 2px solid #ddd6fe; width: 60%;">📝 Bình luận (Heatmap)</th>
+                   border-bottom: 2px solid #ddd6fe; width: 60%;">📝 Bình luận</th>
         <th style="padding: 10px 12px; text-align: center; color: #ffffff; 
                    border-bottom: 2px solid #ddd6fe; width: 15%;">🏷️ Sắc thái</th>
         <th style="padding: 10px 12px; text-align: center; color: #ffffff; 

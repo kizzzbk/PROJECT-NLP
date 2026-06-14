@@ -41,7 +41,7 @@ training:
   
   # Early stopping
   early_stopping: true
-  patience: 5
+  patience: 2
   monitor: "val_f1"                # Metric to monitor
   mode: "max"                      # "max" (for f1/acc) | "min" (for loss)
   

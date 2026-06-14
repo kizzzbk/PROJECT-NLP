@@ -68,15 +68,24 @@ p, label, [data-testid="stWidgetLabel"] p {
     box-shadow: 0 4px 12px rgba(109, 40, 217, 0.1) !important;
 }
 
-.stButton > button[kind="primary"] {
+.stButton > button[kind="primary"], 
+button[data-testid="stBaseButton-primary"],
+button[data-testid="stBaseButton-primary"] p,
+button[data-testid="stBaseButton-primary"] div,
+button[data-testid="stBaseButton-primary"] span {
     background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%) !important;
     border: none !important;
     color: #ffffff !important;
+    font-size: 1.15rem !important;
+    font-weight: 700 !important;
 }
 
-.stButton > button[kind="primary"]:hover {
+.stButton > button[kind="primary"]:hover,
+button[data-testid="stBaseButton-primary"]:hover {
     background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%) !important;
+    box-shadow: 0 4px 15px rgba(124, 58, 237, 0.3) !important;
 }
+
 
 /* Dropdowns / Selectbox (Soft Purple) */
 .stSelectbox div[data-baseweb="select"] {

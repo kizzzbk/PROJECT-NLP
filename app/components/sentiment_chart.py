@@ -56,7 +56,7 @@ def render_sentiment_chart(
             y=-0.15,
             xanchor="center",
             x=0.5,
-            font=dict(size=13, color="#e2e8f0"),
+            font=dict(size=13, color="#311066"),
         ),
         paper_bgcolor="rgba(0,0,0,0)",
         plot_bgcolor="rgba(0,0,0,0)",
@@ -65,7 +65,7 @@ def render_sentiment_chart(
             dict(
                 text=f"<b>{total:,}</b><br>bình luận",
                 x=0.5, y=0.5,
-                font=dict(size=14, color="#e2e8f0"),
+                font=dict(size=14, color="#311066"),
                 showarrow=False,
             )
         ],
@@ -76,3 +76,4 @@ def render_sentiment_chart(
         use_container_width=True,
         key="sentiment_pie_chart",
     )
+
